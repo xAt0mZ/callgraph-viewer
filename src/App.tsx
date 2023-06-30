@@ -36,7 +36,7 @@ export function App() {
     const filteredEdges = allEdges.filter(
       (e) => nodeNames.includes(e.source) || nodeNames.includes(e.target)
     );
-    const sourceNodes = 
+    // const sourceNodes = 
 
     filteredNodes.map((n, idx) => {
       n.position = { x: idx * 100, y: idx * 100 };
