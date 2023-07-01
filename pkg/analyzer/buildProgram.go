@@ -20,16 +20,16 @@ var PackagesLoadMode = packages.NeedDeps |
 	packages.NeedCompiledGoFiles
 
 // -- program construction ------------------------------------------
-func (a *Analyzer) BuildProgram(dir, gopath string, tests bool, args []string) error {
+func (a *Analyzer) buildProgram() error {
 	cfg := &packages.Config{
 		Mode:  PackagesLoadMode,
-		Tests: tests,
-		Dir:   dir,
+		Tests: a.flags.Tests,
+		Dir:   a.flags.Dir,
 	}
-	if gopath != "" {
-		cfg.Env = append(os.Environ(), "GOPATH="+gopath) // to enable testing
+	if a.flags.Gopath != "" {
+		cfg.Env = append(os.Environ(), "GOPATH="+a.flags.Gopath) // to enable testing
 	}
-	initial, err := packages.Load(cfg, args...)
+	initial, err := packages.Load(cfg, a.flags.Args...)
 	if err != nil {
 		return err
 	}

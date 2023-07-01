@@ -12,9 +12,10 @@ import (
 )
 
 // -- call graph construction ------------------------------------------
-func (a *Analyzer) BuildGraph(algo string) error {
+func (a *Analyzer) buildGraph() error {
 	prog := a.prog
 	pkgs := a.pkgs
+	algo := a.flags.Algo
 
 	var cg *callgraph.Graph
 

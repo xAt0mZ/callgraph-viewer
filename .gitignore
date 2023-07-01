@@ -7,10 +7,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Builds dirs/files
 node_modules
 dist
 dist-ssr
 *.local
+callgraph-viewer
+
 
 # Editor directories and files
 .vscode/*

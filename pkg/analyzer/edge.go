@@ -7,10 +7,6 @@ import (
 	"golang.org/x/tools/go/ssa"
 )
 
-//////////
-// EDGE //
-//////////
-
 type Edge struct {
 	Caller *ssa.Function
 	Callee *ssa.Function

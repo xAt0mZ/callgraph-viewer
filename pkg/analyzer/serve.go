@@ -13,7 +13,9 @@ import (
 )
 
 // -- serve http ------------------------------------------------------------
-func (a *Analyzer) Serve(url string) error {
+func (a *Analyzer) serve() error {
+	url := a.flags.Url
+
 	fs := http.FileServer(http.Dir("./dist"))
 	http.Handle("/", fs)
 
