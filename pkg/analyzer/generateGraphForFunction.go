@@ -2,42 +2,33 @@ package analyzer
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"html/template"
 	"io"
-	"net/http"
 	"os"
-	"text/template"
+	"strings"
 
 	"golang.org/x/tools/go/callgraph"
 )
 
-// -- serve http ------------------------------------------------------------
-func (a *Analyzer) serve() error {
-	url := a.flags.Url
-
-	fs := http.FileServer(http.Dir("./dist"))
-	http.Handle("/", fs)
-
-	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-
-		pkg := r.URL.Query().Get("pkg")
-		fn := r.URL.Query().Get("fn")
-
-		_, err := a.generateGraph(pkg, fn)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(err)
-			return
+func (a *Analyzer) GenerateGraphFor(pkg string, fn string) (error, error) {
+	for f, n := range a.cg.Nodes {
+		// rel := f.RelString(nil)
+		if strings.Contains(f.Pkg.Pkg.Path(), pkg) {
+			fmt.Println(
+				f.Pkg.Pkg.Path(),
+				n.Func.Name(),
+				f.Pkg.Members,
+			)
 		}
-
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(nil)
-	})
-
-	fmt.Printf("Listening on %q ...", url)
-	return http.ListenAndServe(url, nil)
+	}
+	fmt.Println()
+	// if err := callgraph.GraphVisitEdges(a.cg, func(edge *callgraph.Edge) error {
+	// 	return nil
+	// }); err != nil {
+	// 	return nil, err
+	// }
+	return nil, nil
 }
 
 // -- output------------------------------------------------------------

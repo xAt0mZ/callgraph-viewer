@@ -1,7 +1,7 @@
 package analyzer
 
 import (
-	"github.com/xat0mz/go-callgraph-viewer/pkg/flags"
+	"github.com/xat0mz/callgraph-viewer/pkg/flags"
 	"golang.org/x/tools/go/callgraph"
 	"golang.org/x/tools/go/ssa"
 )
@@ -11,9 +11,11 @@ type Analyzer struct {
 	prog  *ssa.Program
 	pkgs  []*ssa.Package
 	cg    *callgraph.Graph
+
+	nodes map[string]*callgraph.Node
 }
 
-func (a *Analyzer) DoAnalyze(f *flags.Flags) error {
+func (a *Analyzer) Analyze(f *flags.Flags) error {
 	a.flags = f
 
 	if err := a.buildProgram(); err != nil {
@@ -24,9 +26,7 @@ func (a *Analyzer) DoAnalyze(f *flags.Flags) error {
 		return err
 	}
 
-	return a.serve()
-	// if err := analyzer.OutputGraph(*formatFlag); err != nil {
-	// 	exit(err)
-	// }
+	a.buildNodesMap()
 
+	return nil
 }

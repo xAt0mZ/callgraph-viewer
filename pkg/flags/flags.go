@@ -35,12 +35,12 @@ func (f *Flags) Parse() {
 
 	flag.Var((*buildutil.TagsFlag)(&build.Default.BuildTags), "tags", buildutil.TagsFlagDoc)
 
-	f.Args = flag.Args()
-
 	flag.Parse()
+
+	f.Args = flag.Args()
 	if len(f.Args) == 0 {
 		fmt.Fprint(os.Stderr, Usage)
-		return
+		os.Exit(0)
 	}
 }
 

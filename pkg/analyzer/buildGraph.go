@@ -11,7 +11,7 @@ import (
 	"golang.org/x/tools/go/ssa/ssautil"
 )
 
-// -- call graph construction ------------------------------------------
+// -- callgraph construction ------------------------------------------
 func (a *Analyzer) buildGraph() error {
 	prog := a.prog
 	pkgs := a.pkgs

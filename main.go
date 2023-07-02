@@ -7,8 +7,9 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/xat0mz/go-callgraph-viewer/pkg/analyzer"
-	"github.com/xat0mz/go-callgraph-viewer/pkg/flags"
+	"github.com/xat0mz/callgraph-viewer/pkg/analyzer"
+	"github.com/xat0mz/callgraph-viewer/pkg/flags"
+	"github.com/xat0mz/callgraph-viewer/pkg/server"
 )
 
 func init() {
@@ -23,13 +24,22 @@ func init() {
 	}
 }
 
+func exit(err error) {
+	fmt.Fprintf(os.Stderr, "callgraph-viewer: %s\n", err)
+	os.Exit(1)
+}
+
 func main() {
 	f := new(flags.Flags)
 	f.Parse()
 
 	a := new(analyzer.Analyzer)
-	if err := a.DoAnalyze(f); err != nil {
-		fmt.Fprintf(os.Stderr, "callgraph-viewer: %s\n", err)
-		os.Exit(1)
+	if err := a.Analyze(f); err != nil {
+		exit(err)
+	}
+
+	s := server.NewServer(f, a)
+	if err := s.Serve(); err != nil {
+		exit(err)
 	}
 }
